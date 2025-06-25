@@ -104,7 +104,7 @@ public class StudentGradeGUI extends JFrame {
     private void processStudent() {
         String name = nameField.getText().trim();
         if (!name.matches("[a-zA-Z ]+")) {
-            JOptionPane.showMessageDialog(this, "❌ Invalid name! Only alphabets allowed.");
+            JOptionPane.showMessageDialog(this, "\u274C Invalid name! Only alphabets allowed.");
             return;
         }
 
@@ -118,12 +118,12 @@ public class StudentGradeGUI extends JFrame {
                         try {
                             double m = Double.parseDouble(((JTextField) f).getText());
                             if (m < 0 || m > 100) {
-                                JOptionPane.showMessageDialog(this, "❌ Marks must be between 0 and 100.");
+                                JOptionPane.showMessageDialog(this, "\u274C Marks must be between 0 and 100.");
                                 return;
                             }
                             marks.add(m);
                         } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(this, "❌ Enter valid numeric marks.");
+                            JOptionPane.showMessageDialog(this, "\u274C Enter valid numeric marks.");
                             return;
                         }
                     }
