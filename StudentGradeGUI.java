@@ -59,13 +59,32 @@ public class StudentGradeGUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        totalStudents = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter total number of students:"));
-        int totalSubjects = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter number of subjects:"));
+        try {
+            String studentInput = JOptionPane.showInputDialog(this, "Enter total number of students:");
+            if (studentInput == null || studentInput.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Cancelled. Exiting.");
+                System.exit(0);
+            }
+            totalStudents = Integer.parseInt(studentInput.trim());
 
-        for (int i = 1; i <= totalSubjects; i++) {
-            String subName = JOptionPane.showInputDialog(this, "Enter name of Subject " + i + ":");
-            String subCode = JOptionPane.showInputDialog(this, "Enter code of Subject " + i + ":");
-            subjects.add(new Subject(subName, subCode));
+            String subjectInput = JOptionPane.showInputDialog(this, "Enter number of subjects:");
+            if (subjectInput == null || subjectInput.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Cancelled. Exiting.");
+                System.exit(0);
+            }
+            int totalSubjects = Integer.parseInt(subjectInput.trim());
+
+            for (int i = 1; i <= totalSubjects; i++) {
+                String subName = JOptionPane.showInputDialog(this, "Enter name of Subject " + i + ":");
+                if (subName == null || subName.trim().isEmpty()) System.exit(0);
+                String subCode = JOptionPane.showInputDialog(this, "Enter code of Subject " + i + ":");
+                if (subCode == null || subCode.trim().isEmpty()) System.exit(0);
+                subjects.add(new Subject(subName.trim(), subCode.trim()));
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid input! Closing app.");
+            System.exit(0);
         }
 
         JPanel topPanel = new JPanel(new GridLayout(2, 2, 5, 5));
@@ -104,7 +123,7 @@ public class StudentGradeGUI extends JFrame {
     private void processStudent() {
         String name = nameField.getText().trim();
         if (!name.matches("[a-zA-Z ]+")) {
-            JOptionPane.showMessageDialog(this, "\u274C Invalid name! Only alphabets allowed.");
+            JOptionPane.showMessageDialog(this, "❌ Invalid name! Only alphabets allowed.");
             return;
         }
 
@@ -118,12 +137,12 @@ public class StudentGradeGUI extends JFrame {
                         try {
                             double m = Double.parseDouble(((JTextField) f).getText());
                             if (m < 0 || m > 100) {
-                                JOptionPane.showMessageDialog(this, "\u274C Marks must be between 0 and 100.");
+                                JOptionPane.showMessageDialog(this, "❌ Marks must be between 0 and 100.");
                                 return;
                             }
                             marks.add(m);
                         } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(this, "\u274C Enter valid numeric marks.");
+                            JOptionPane.showMessageDialog(this, "❌ Enter valid numeric marks.");
                             return;
                         }
                     }
@@ -153,12 +172,12 @@ public class StudentGradeGUI extends JFrame {
         }
 
         if (topper != null) {
-            sb.append("\n\uD83C\uDFC6 Topper:\n");
+            sb.append("\n🏆 Topper:\n");
             sb.append(String.format("%s - %.2f (%s)\n", topper.name, topper.average, topper.grade));
         }
 
         if (lowest != null) {
-            sb.append("\n\uD83D\uDCC9 Lowest Scorer:\n");
+            sb.append("\n📉 Lowest Scorer:\n");
             sb.append(String.format("%s - %.2f (%s)\n", lowest.name, lowest.average, lowest.grade));
         }
 
